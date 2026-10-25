@@ -1,94 +1,50 @@
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
 
 
-FEATURE_COLUMNS = [
-    "frequency_hz",
-    "angle_of_attack_deg",
-    "chord_length_m",
-    "free_stream_velocity_ms",
-    "suction_side_displacement_thickness_m",
-]
-
-TARGET_COLUMN = "scaled_sound_pressure_db"
-
-
-def split_features_target(df):
+def plot_feature_distributions(df, columns):
     """
-    Separate the input features from the target variable.
+    Plot histograms for selected numerical features.
 
     Parameters
     ----------
     df : pandas.DataFrame
-        Airfoil Self-Noise dataset.
-
-    Returns
-    -------
-    X : pandas.DataFrame
-        Input features.
-    y : pandas.Series
-        Target variable.
+        Dataset containing the features.
+    columns : list
+        Names of columns to plot.
     """
 
-    X = df[FEATURE_COLUMNS]
-    y = df[TARGET_COLUMN]
+    for column in columns:
+        plt.figure(figsize=(8, 5))
 
-    return X, y
+        plt.hist(df[column], bins=30)
+
+        plt.title(f"Distribution of {column}")
+        plt.xlabel(column)
+        plt.ylabel("Frequency")
+
+        plt.tight_layout()
+        plt.show()
 
 
-def split_data(X, y, test_size=0.2, random_state=42):
+def plot_target_distribution(df, target_column):
     """
-    Split the dataset into training and testing sets.
+    Plot the distribution of the target variable.
 
     Parameters
     ----------
-    X : pandas.DataFrame
-        Input features.
-    y : pandas.Series
-        Target variable.
-    test_size : float
-        Proportion reserved for testing.
-    random_state : int
-        Random seed for reproducibility.
-
-    Returns
-    -------
-    X_train, X_test, y_train, y_test
+    df : pandas.DataFrame
+        Dataset containing the target.
+    target_column : str
+        Name of the target column.
     """
 
-    return train_test_split(
-        X,
-        y,
-        test_size=test_size,
-        random_state=random_state
-    )
+    plt.figure(figsize=(8, 5))
 
+    plt.hist(df[target_column], bins=30)
 
-def scale_features(X_train, X_test):
-    """
-    Standardize input features using the training data.
+    plt.title("Distribution of Scaled Sound Pressure")
+    plt.xlabel("Scaled Sound Pressure (dB)")
+    plt.ylabel("Frequency")
 
-    Parameters
-    ----------
-    X_train : pandas.DataFrame
-        Training features.
-    X_test : pandas.DataFrame
-        Testing features.
-
-    Returns
-    -------
-    X_train_scaled : numpy.ndarray
-        Scaled training features.
-    X_test_scaled : numpy.ndarray
-        Scaled testing features.
-    scaler : StandardScaler
-        Fitted scaler.
-    """
-
-    scaler = StandardScaler()
-
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
-
-    return X_train_scaled, X_test_scaled, scaler
+    plt.tight_layout()
+    plt.show()
