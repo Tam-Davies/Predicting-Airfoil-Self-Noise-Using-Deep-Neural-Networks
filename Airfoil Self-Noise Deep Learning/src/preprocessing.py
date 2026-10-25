@@ -1,4 +1,3 @@
-import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
@@ -14,81 +13,46 @@ FEATURE_COLUMNS = [
 TARGET_COLUMN = "scaled_sound_pressure_db"
 
 
-def split_features_target(df):
+class DataPreprocessor:
     """
-    Separate the input features from the target variable.
-
-    Parameters
-    ----------
-    df : pandas.DataFrame
-        Airfoil Self-Noise dataset.
-
-    Returns
-    -------
-    X : pandas.DataFrame
-        Input features.
-    y : pandas.Series
-        Target variable.
+    Handle feature-target separation, train-test splitting,
+    and feature scaling for the airfoil self-noise dataset.
     """
 
-    X = df[FEATURE_COLUMNS]
-    y = df[TARGET_COLUMN]
+    def __init__(self, test_size=0.2, random_state=42):
+        self.test_size = test_size
+        self.random_state = random_state
+        self.scaler = StandardScaler()
 
-    return X, y
+    def split_features_target(self, df):
+        """
+        Separate input features from the target variable.
+        """
 
+        X = df[FEATURE_COLUMNS]
+        y = df[TARGET_COLUMN]
 
-def split_data(X, y, test_size=0.2, random_state=42):
-    """
-    Split the dataset into training and testing sets.
+        return X, y
 
-    Parameters
-    ----------
-    X : pandas.DataFrame
-        Input features.
-    y : pandas.Series
-        Target variable.
-    test_size : float
-        Proportion reserved for testing.
-    random_state : int
-        Random seed for reproducibility.
+    def split_data(self, X, y):
+        """
+        Split the dataset into training and testing sets.
+        """
 
-    Returns
-    -------
-    X_train, X_test, y_train, y_test
-    """
+        return train_test_split(
+            X,
+            y,
+            test_size=self.test_size,
+            random_state=self.random_state
+        )
 
-    return train_test_split(
-        X,
-        y,
-        test_size=test_size,
-        random_state=random_state
-    )
+    def scale_features(self, X_train, X_test):
+        """
+        Fit the scaler on training data and transform
+        both training and testing features.
+        """
 
+        X_train_scaled = self.scaler.fit_transform(X_train)
+        X_test_scaled = self.scaler.transform(X_test)
 
-def scale_features(X_train, X_test):
-    """
-    Standardize input features using the training data.
-
-    Parameters
-    ----------
-    X_train : pandas.DataFrame
-        Training features.
-    X_test : pandas.DataFrame
-        Testing features.
-
-    Returns
-    -------
-    X_train_scaled : numpy.ndarray
-        Scaled training features.
-    X_test_scaled : numpy.ndarray
-        Scaled testing features.
-    scaler : StandardScaler
-        Fitted scaler.
-    """
-
-    scaler = StandardScaler()
-
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
-
-    return X_train_scaled, X_test_scaled, scaler
+        return X_train_scaled, X_test_scaled
