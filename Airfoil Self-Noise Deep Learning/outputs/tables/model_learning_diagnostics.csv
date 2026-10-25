@@ -1,0 +1,5 @@
+Model,Epochs,Best_Validation_Loss,Best_Validation_Loss_Epoch,Best_Validation_MAE,Best_Validation_MAE_Epoch
+Baseline,100,22.5902,100,3.6636,100
+Variation 1 - Log Frequency,100,41.6569,100,4.9184,100
+Variation 2 - Larger Network,100,21.9345,99,3.728,99
+Variation 3 - Lower Learning Rate,100,35.0535,100,4.557,100

@@ -1,0 +1,5 @@
+Model,MAE,RMSE,R2,MAE_change_pct,RMSE_change_pct,R2_change_pct
+Baseline,4.1206,5.2105,0.4581,0.0,0.0,0.0
+Variation 1 - Log Frequency,4.8433,6.1057,0.2559,17.5396,17.1797,-44.1407
+Variation 2 - Larger Network,3.3268,4.3036,0.6303,-19.2637,-17.405,37.5981
+Variation 3 - Lower Learning Rate,4.2948,5.4331,0.4108,4.2287,4.2711,-10.3218
